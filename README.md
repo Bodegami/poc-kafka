@@ -9,9 +9,9 @@
 <p>3 - Criar um projeto que deve consumir mensagens de um tópico Kafka.</p>
 
 <b><h3>Requisitos:</h3></b>
- - Para essa primeira etapa, sugiro utilizar as dependências:
+<p> - Para essa primeira etapa, sugiro utilizar as dependências:
  
-     <dependency>
+    <dependency>
        <groupId>org.apache.kafka</groupId>
        <artifactId>kafka-streams</artifactId>
     </dependency>
@@ -31,7 +31,7 @@
       <artifactId>h2</artifactId>
       <scope>runtime</scope>
     </dependency>
-    
+ </p>   
  <b><h3>Critérios de Aceite:</h3></b>
 
  - Para o primeiro objetivo, ao subir o docker-compose, deve subir também um arquivo .txt com os comandos básicos para criar um tópico, produzir uma mensagem, consumir uma mensagem e listar todos os tópicos.
