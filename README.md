@@ -4,11 +4,11 @@
 
 <h2><b>Primeira Etapa</b></h2>
 
-<p>1 - Subir um docker-compose com o zookeeper, kafka e uma interface para visualização do Kafka.</p>
+<p>1 - <s>Subir um docker-compose com o zookeeper, kafka e uma interface para visualização do Kafka.</s> DONE!</p>
 <p>2 - Criar um projeto que deve produzir mensagens para um tópico Kafka.</p>
 <p>3 - Criar um projeto que deve consumir mensagens de um tópico Kafka.</p>
 
-<b>Requisitos:</b>
+<b><h3>Requisitos:</h3></b>
  - Para essa primeira etapa, sugiro utilizar as dependências:
  
      <dependency>
@@ -32,7 +32,7 @@
       <scope>runtime</scope>
     </dependency>
     
- <b>Critérios de Aceite:</b>
+ <b><h3>Critérios de Aceite:</h3></b>
 
  - Para o primeiro objetivo, ao subir o docker-compose, deve subir também um arquivo .txt com os comandos básicos para criar um tópico, produzir uma mensagem, consumir uma mensagem e listar todos os tópicos.
  - Para o segundo objetivo, o projeto que contém o producer deve conter um endpoint que quando chamado, ele deve produzir uma mensagem no tópico com as informações do request.
@@ -40,10 +40,18 @@
  
  
  
- <b>Dicas:</b>
+ <b><h3>Dicas:</h3></b>
  - A própria documentação do Spring kafka já passa o básico para criação de um producer e consumer.
  - Tenho esse repo com as implementações do kafka que vocês podem se basear nele: 
   - o primeiro é projeto que contem um producer e o consumer
   - o segundo é só o producer
   - o terceiro é só o consumer
   - LINK: https://github.com/Bodegami/apache-kafka-spring
+
+
+ <b><h3>Ideias para futuros projetos:</h3></b>
+ - Design Patterns
+ - Cache com Redis
+ - WebFlux
+ - Java com NoSQL
+ - Java com Cloud Pública

@@ -1,0 +1,86 @@
+version: '2'
+## Zookeeper = O Apache ZooKeeper é um servidor para resolver nomes, fornecer informação de configuração e sincronizar conjuntos de servidores distribuídos.
+## O seu objetivo é simplificar a gestão de serviços, com propagação fiável de alterações de configuração.
+
+## Kafka = O Apache Kafka é uma plataforma distribuída de transmissão de dados que é capaz de publicar, subscrever, armazenar e processar fluxos de registro em tempo real.
+
+## Schema-Registry = O Schema Registry fornece uma camada de serviço para os metadados das mensagens. 
+## Ele provê uma interface RESTful para armazenar e recuperar schemas Avro, JSON Schema e Protobuf, e ele utiliza o próprio Apache Kafka como camada de armazenamento.
+
+## Rest-Proxy = O Proxy REST do Kafka permite interagir com o cluster Kafka por meio de uma API REST via HTTPS. Dessa maneira, os clientes do Kafka podem ficar fora da rede virtual. 
+## Os clientes podem fazer chamadas HTTPS simples e seguras para o cluster Kafka, em vez de usar as bibliotecas Kafka.
+
+## KafDrop = projeto Web open source que permite visualizar informações de brokers Kafka como tópicos existentes, consumers e até mesmo o conteúdo de mensagens enviadas a um tópico.
+
+# Para executar o docker-compose, com o docker aberto, vá até o diretório onde se encontra esse arquivo .yml e execute o comando CMD: docker-compose up
+
+services:
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.5.1
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:5.5.1
+    hostname: kafka
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "29092:29092"
+      - "9092:9092"
+      - "9101:9101"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_JMX_PORT: 9101
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:5.5.1
+    hostname: schema-registry
+    container_name: schema-registry
+    depends_on:
+      - zookeeper
+      - kafka
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: 'zookeeper:2181'
+
+  rest-proxy:
+    image: confluentinc/cp-kafka-rest:5.5.1
+    depends_on:
+      - zookeeper
+      - kafka
+      - schema-registry
+    ports:
+      - 8082:8082
+    hostname: rest-proxy
+    container_name: rest-proxy
+    environment:
+      KAFKA_REST_HOST_NAME: rest-proxy
+      KAFKA_REST_BOOTSTRAP_SERVERS: 'kafka:29092'
+      KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
+      KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop:3.27.0
+    depends_on:
+      - kafka
+    ports:
+      - 9000:9000
+    environment:
+      KAFKA_BROKERCONNECT: kafka:29092
