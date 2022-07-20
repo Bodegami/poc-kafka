@@ -37,3 +37,13 @@
  - Para o primeiro objetivo, ao subir o docker-compose, deve subir também um arquivo .txt com os comandos básicos para criar um tópico, produzir uma mensagem, consumir uma mensagem e listar todos os tópicos.
  - Para o segundo objetivo, o projeto que contém o producer deve conter um endpoint que quando chamado, ele deve produzir uma mensagem no tópico com as informações do request.
  - Para o terceiro objetivo, o projeto que contém o consumer deve consumir a mensagem e perstir em um banco de dados relacional ou não.
+ 
+ 
+ 
+ <b>Dicas:</b>
+ - A própria documentação do Spring kafka já passa o básico para criação de um producer e consumer.
+ - Tenho esse repo com as implementações do kafka que vocês podem se basear nele: 
+  - o primeiro é projeto que contem um producer e o consumer
+  - o segundo é só o producer
+  - o terceiro é só o consumer
+  LINK: https://github.com/Bodegami/apache-kafka-spring
